@@ -1,11 +1,19 @@
 import numpy as np
 
 class Bot:
-    def __init__(self, matrix = np.random.random([8,4])):
+    """Enviroment's actor.
+    Attributes:
+        matrix: decision matrix, that defines actor
+        sum_reward: sum of all rewards gained by actor"""
+    def __init__(self, matrix = None):
+        if matrix is None:
+            matrix = np.random.random([8,4])
+
         self.matrix = matrix
+        self.sum_reward = 0
     
     def __str__(self):
-        print(self.matrix)
+        return str(self.matrix)
     
     def action(self, observation):
         """Returns bot's choosen action."""
@@ -16,6 +24,6 @@ class Bot:
         """Rewards bot acording to his action."""
         self.sum_reward += reward
     
-    def performance(self):
+    def fitness(self):
         """Returns evaluated performance - sum of all rewards."""
         return self.sum_reward
