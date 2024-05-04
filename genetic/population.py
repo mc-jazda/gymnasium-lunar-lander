@@ -1,4 +1,4 @@
-from bot import Bot
+from .bot import Bot
 import random
 import numpy as np
 
@@ -21,7 +21,17 @@ class Population:
 
     def reset_rewards(self):
         for bot in self.bots:
-            bot.reward = 0
+            bot.sum_reward = 0
+    
+    def get_best_fitness(self):
+        best_fitness = -10000000.0
+
+        for bot in self.bots:
+            fitness = bot.fitness()
+            if fitness > best_fitness:
+                best_fitness = fitness
+
+        return best_fitness
 
     def crossover(self):
         # choose top num_surviving bots
