@@ -32,6 +32,18 @@ class Population:
                 best_fitness = fitness
 
         return best_fitness
+    
+    def get_best_bot(self):
+        best_fitness = -10000000.0
+        best_bot = None
+
+        for bot in self.bots:
+            fitness = bot.fitness()
+            if fitness > best_fitness:
+                best_fitness = fitness
+                best_bot = bot
+        
+        return best_bot
 
     def crossover(self):
         # choose top num_surviving bots
