@@ -29,9 +29,6 @@ def train_bot(num_generations=100):
                     observation, info = env.reset(seed=seed)
                     break
 
-                if keyboard.is_pressed('q'):
-                    exit(0)
-
         population.crossover()
         population.mutation(0.3)
         print(f'Best fitness score in generation number {gen+1}: {population.get_best_fitness()}')
