@@ -19,6 +19,10 @@ class Population:
             str += self.bots[i].__str__() + '\n\n'
         return str
 
+    def reset_rewards(self):
+        for bot in self.bots:
+            bot.reward = 0
+
     def crossover(self):
         # choose top num_surviving bots
         self.bots = sorted(self.bots, key=lambda bot : bot.fitness(), reverse=True)
@@ -27,21 +31,34 @@ class Population:
 
         # generate new bots
         for i in range(self.num_new):
+            # choose parents and cross point
             first_parent = random.choice(self.bots).matrix.flatten()
             second_parent = random.choice(self.bots).matrix.flatten()
             cross_point = random.randint(1, 32)
-            print(cross_point)
 
             # crossover
             offspring = np.concatenate((first_parent[:cross_point], second_parent[cross_point:]))
             offspring = offspring.reshape((8,4))
             
             new_generation.append(Bot(offspring))
+    
+    def mutation(self, probability=0.2):
+        for bot in self.bots:
+            matrix = bot.matrix.flatten()
+            
+            for i in range(32):
+                if random.random() <= probability:
+                    val = random.random()
+                    matrix[i] += val
+            
+            matrix = matrix.reshape((8,4))
+            bot.matrix = matrix
+
 
 
 if __name__ == '__main__':
-    pop = Population(num_surviving=2, num_new=2)
+    pop = Population(num_surviving=1, num_new=1)
     print(pop)
     print('\n-------------------------------------------------------')
-    pop.crossover()
+    pop.mutation(0.5)
     print(pop)
