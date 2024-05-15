@@ -1,4 +1,5 @@
 import numpy as np
+import json
 
 class Bot:
     """Enviroment's actor.
@@ -27,3 +28,17 @@ class Bot:
     def fitness(self):
         """Returns evaluated performance - sum of all rewards."""
         return self.sum_reward
+
+    def save_to_json(self, filename):
+        """Saves bot's matrix to json. Used after training to save best bot."""
+        mat = self.matrix.tolist()
+
+        with open(filename, 'w') as file:
+            json.dump(mat, file)
+    
+    def load_from_json(self, filename):
+        """Initializes bot with matrix from a json file."""
+        with open(filename, 'r') as file:
+            mat = json.load(file)
+        
+        self.matrix = np.array(mat)
