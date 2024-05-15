@@ -5,7 +5,7 @@ import random
 from .bot import Bot
 from .population import Population
 
-def train_bot(num_generations=100, num_surviving=20, num_new=80, mut_prob=0.2, bots=None, seed=0):
+def train_bot(num_generations=100, num_surviving=20, num_new=80, mut_prob=0.2, bots=None):
     """Train bot to pass lunar lander problem. Training is done using genetic algorithm.
     Parameters:
         num_generations: number of generations used to train bot
@@ -18,13 +18,10 @@ def train_bot(num_generations=100, num_surviving=20, num_new=80, mut_prob=0.2, b
     """
     env = gym.make("LunarLander-v2")
 
-    rng, seed = np_random(seed)
-
     population = Population(num_surviving=num_surviving, num_new=num_new, bots=bots)
 
     for gen in range(num_generations): # number of generations
-        seed = int(rng.integers(low=0, high=num_generations))
-        observation, info = env.reset(seed=seed)
+        observation, info = env.reset()
 
         for bot in population.bots:
             while True:
