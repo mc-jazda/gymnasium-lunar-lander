@@ -5,22 +5,20 @@ import random
 from .bot import Bot
 from .population import Population
 
-
-
-def train_bot(num_generations=100, num_surviving=80, num_new=20, mut_prob=0.2, bots=None):
+def train_bot(num_generations=100, num_surviving=20, num_new=80, mut_prob=0.2, bots=None, seed=0):
     """Train bot to pass lunar lander problem. Training is done using genetic algorithm.
     Parameters:
-        num_generations: number of generations used to train bots
+        num_generations: number of generations used to train bot
         num_surviving: number of bots that live unchanged to the next generation
         num_new: number of new bots generated in every generation
         mut_prob: probability of mutation per bot
-        bots: list of bots that will be the first generation. If None bots are initialized randomly
+        bots: list of bots that will be the first generation. If bots are None they initialized randomly
     Returns:
-        bot with highest fitness function score in the last generation
+        bot with the highest fitness function score in the last generation
     """
     env = gym.make("LunarLander-v2")
 
-    rng, seed = np_random(0)
+    rng, seed = np_random(seed)
 
     population = Population(num_surviving=num_surviving, num_new=num_new, bots=bots)
 
