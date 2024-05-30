@@ -85,7 +85,7 @@ class Population:
     def roulette_selection(self):
         """Roulette selection algorithm. Part of genetic algorithm.
         Returns:
-            selected bot
+            tuple of selected parents
         """
         self.normalize_fitness()
         total_score = self.get_total_score()
@@ -93,10 +93,18 @@ class Population:
         relative_score = [bot.fitness() / total_score for bot in self.bots]
         cumulative_probability = [sum(relative_score[:i+1]) for i in range(len(relative_score))]
 
-        rand = random.random()
+        first_parent = None
+        second_parent = None
+        rand1 = random.random()
+        rand2 = random.random()
+
         for i, cp in enumerate(cumulative_probability):
-            if rand <= cp:
-                return self.bots[i]
+            if first_parent == None and rand1 <= cp:
+                first_parent = self.bots[i]
+            if second_parent == None and rand2 <= cp:
+                second_parent = self.bots[i]
+
+        return (first_parent, second_parent)
 
     def crossover(self):
         """Creates new bots out of crossover of two other bots. Part of genetic algorithm."""
@@ -108,8 +116,9 @@ class Population:
         # generate new bots
         for i in range(self.num_new):
             # choose parents and cross point
-            first_parent = self.roulette_selection().matrix.flatten()
-            second_parent = self.roulette_selection().matrix.flatten()
+            parents = self.roulette_selection()
+            first_parent = parents[0].matrix.flatten()
+            second_parent = parents[1].matrix.flatten()
             cross_point = random.randint(1, 32)
 
             # crossover
@@ -117,6 +126,8 @@ class Population:
             offspring = offspring.reshape((8,4))
             
             new_generation.append(Bot(offspring))
+        
+        self.bots = new_generation
     
     def mutation(self, probability=0.2):
         """Randomly alters an entry in bots' matrix. Part of genetic algorithm.
