@@ -5,7 +5,7 @@ import random
 from .bot import Bot
 from .population import Population
 
-def train_bot(num_generations=100, num_surviving=20, num_new=80, mut_prob=0.2, bots=None):
+def train_bot(num_generations=100, num_surviving=5, num_new=10, mut_prob=0.2, bots=None):
     """Train bot to pass lunar lander problem. Training is done using genetic algorithm.
     Parameters:
         num_generations: number of generations used to train bot
